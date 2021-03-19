@@ -4,20 +4,21 @@ import { UserService } from './user.service';
 import { Roles } from '../role/decorators/role.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from '../role/guards/role.guard';
+import { Roletype } from '../role/roletype.enum';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly _userService: UserService){ }
 
   @Get(':id')
-  @Roles('ADMINISTRATOR','AUTHOR')
-  @UseGuards(AuthGuard(), RoleGuard)
+  // @Roles(Roletype.ADMINISTRATOR)
+  // @UseGuards(AuthGuard(), RoleGuard)
   async getUser(@Param('id', ParseIntPipe) id:number):Promise<User>{
     const user = await this._userService.get(id);
     return user;
   }
 
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   @Get()
   async getUsers():Promise<User[]>{
     const users = await this._userService.getAll();
